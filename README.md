@@ -4,40 +4,41 @@ Easily Adds Brief Author Info and License Headers
 Install
 =======
 Preferred installation method is using [Pathogen](https://github.com/tpope/vim-pathogen)
-
-    cd ~/.vim/bundle
-    git clone https://github.com/alpertuna/vim-header
+```sh
+cd ~/.vim/bundle
+git clone https://github.com/alpertuna/vim-header
+```
 Or you can use your own way
 
 Usage
 =====
 This is a general usage example.
 You can add these lines into your `.vimrc`
-
-    let g:header_field_author = 'Your Name'
-    let g:header_field_author_email = 'your@mail'
-    map <F4> :AddHeader<CR>
-
+```vim
+let g:header_field_author = 'Your Name'
+let g:header_field_author_email = 'your@mail'
+map <F4> :AddHeader<CR>
+```
 Pressing `F4` in normal mode will add a brief author information at the top of your buffer.
 
 Examples
 ========
 For example, when you open a file named `start.sh` and press `F4` after above settings, plugin will add these lines at the top of your buffer
-
-    #!/bin/bash
-    # start.sh
-    # Author: Your Name <your@mail>
-    # Date: 13.03.2016
-
+```sh
+#!/bin/bash
+# start.sh
+# Author: Your Name <your@mail>
+# Date: 13.03.2016
+```
 or for a file named `index.php`
-
-    <?php
-    /*
-     * index.php
-     * Author: Your Name <your@mail>
-     * Date: 13.03.2016
-     */
-
+```php
+<?php
+/*
+ * index.php
+ * Author: Your Name <your@mail>
+ * Date: 13.03.2016
+ */
+```
 Commands
 ========
 Adding Brief Headers
@@ -54,20 +55,25 @@ Adding Lincenses
 Settings
 ========
 These settings are for your `.vimrc`
-
-    let g:header_field_filename = 0
+```vim
+let g:header_field_filename = 0
+```
 It disables to add filename line in header. Default is 1.
-
-    let g:header_field_author = 'Your Name'
+```vim
+let g:header_field_author = 'Your Name'
+```
 It adds your name as author. Default is ''. Empty string means to disable adding it.
-
-    let g:header_field_author_email = 'your@mail'
+```vim
+let g:header_field_author_email = 'your@mail'
+```
 It adds your email after author name with surrounding `<``>` chars. If you don't define your author name, defined email also won't be shown. Default is ''. Empty string means to disable adding it.
-
-    let g:header_field_timestamp = 0
+```vim
+let g:header_field_timestamp = 0
+```
 It disables to add timestamp line of generating header date in header. Default is 1.
-
-    let g:header_field_timestamp_format = '%d.%m.%Y'
+```vim
+let g:header_field_timestamp_format = '%d.%m.%Y'
+```
 It sets timestamp format for your locale. Default is '%d.%m.%Y'.
 
 Support
