@@ -30,6 +30,8 @@ fun s:set_props()
     let b:first_line = '' " If file type has initial line
     let b:block_comment = 0 " If file type has block comment support
     let b:min_comment_begin = '' " If file type has a special char for minified versions
+    let b:comment_char = '' " Comment char, or for block comment trailing char of body
+    let b:space_after_char = 1 " Put auto space after comment char, if line is not empty
 
     " Setting Values for Languages
     if
@@ -82,6 +84,13 @@ fun s:set_props()
 
         let b:min_comment_begin = '/*!'
     endif
+
+    " For license texts, if there is a empty line, avoid trailing white space
+    let b:comment_char_wo_space = b:comment_char
+    " If there is space after comment char, put it
+    if b:space_after_char
+        let b:comment_char .= ' '
+    endif
 endfun
 
 " HEADER GENERATORS
@@ -103,7 +112,7 @@ fun s:add_header()
 
     " Fill user's information
     if g:header_field_filename
-        call append(l:i, b:comment_char.' '.expand('%s:t'))
+        call append(l:i, b:comment_char.expand('%s:t'))
         let l:i += 1
     endif
     if g:header_field_author != ''
@@ -112,11 +121,11 @@ fun s:add_header()
         else
             let l:email = ''
         endif
-        call append(l:i, b:comment_char.' Author: '.g:header_field_author.l:email)
+        call append(l:i, b:comment_char.'Author: '.g:header_field_author.l:email)
         let l:i += 1
     endif
     if g:header_field_timestamp
-        call append(l:i, b:comment_char.' Date: '.strftime(g:header_field_timestamp_format))
+        call append(l:i, b:comment_char.'Date: '.strftime(g:header_field_timestamp_format))
         let l:i += 1
     endif
 
@@ -191,10 +200,14 @@ fun s:add_license_header(license_name)
     let l:i = 1
     while l:i <= l:license_line_count
         let l:line = getline(l:i)
-        if l:line != ''
-            let l:line = ' '.l:line
+        " If there is a emty line, avoid putting trailing space
+        if l:line == ''
+            let l:line = b:comment_char_wo_space.l:line
+        else
+            let l:line = b:comment_char.l:line
         endif
-        call setline(l:i,b:comment_char.l:line)
+
+        call setline(l:i,l:line)
         let l:i += 1
     endwhile
 
@@ -215,7 +228,7 @@ fun s:add_license_header(license_name)
 
     " Fill user's information
     if g:header_field_filename
-        call append(l:i, b:comment_char.' '.expand('%s:t'))
+        call append(l:i, b:comment_char.expand('%s:t'))
         let l:i += 1
     endif
     if g:header_field_author != ''
@@ -224,7 +237,7 @@ fun s:add_license_header(license_name)
         else
             let l:email = ''
         endif
-        call append(l:i, b:comment_char.' Copyright (c) '.strftime('%Y').' '.g:header_field_author.l:email)
+        call append(l:i, b:comment_char.'Copyright (c) '.strftime('%Y').' '.g:header_field_author.l:email)
         call append(l:i+1, b:comment_char)
         let l:i += 2
     endif
