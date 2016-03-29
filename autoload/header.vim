@@ -32,11 +32,13 @@ fun s:set_props()
     let b:min_comment_begin = '' " If file type has a special char for minified versions
 
     " Setting Values for Languages
-    if b:filetype == 'c' ||
+    if
+        \ b:filetype == 'c' ||
         \ b:filetype == 'cpp' ||
         \ b:filetype == 'css' ||
         \ b:filetype == 'java' ||
         \ b:filetype == 'javascript' ||
+        \ b:filetype == 'javascript.jsx' ||
         \ b:filetype == 'php'
 
         let b:block_comment = 1
@@ -73,9 +75,10 @@ fun s:set_props()
     if b:filetype == 'php'
         let b:first_line = '<?php'
     endif
-    if b:filetype == 'css' ||
+    if
+        \ b:filetype == 'css' ||
         \ b:filetype == 'javascript' ||
-        \ b:filetype == 'php'
+        \ b:filetype == 'javascript.jsx'
 
         let b:min_comment_begin = '/*!'
     endif
@@ -240,10 +243,11 @@ endfun
 "   1: Minified Header
 "   2: License Header (also uses license parameter)
 fun header#add_header(type, license)
-    " If buffer's filetype properties are not set, run it once
-    if !exists('b:is_filetype_available')
+    " If block has been commented bc user may change filetype after opening buffer,
+    " that's why props have to be set again for each call
+    "if !exists('b:is_filetype_available')
         call s:set_props()
-    endif
+    "endif
 
     " If filetype is available, add header else inform user
     if b:is_filetype_available
