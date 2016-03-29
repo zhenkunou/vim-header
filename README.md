@@ -87,6 +87,7 @@ Supported filetypes are;
 - java
 - javascript
 - jsx
+- lua
 - php
 - perl
 - python
