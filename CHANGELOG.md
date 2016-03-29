@@ -1,10 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
 - This CHANGELOG file
 - Filetype support for haskel and jsx
+- Control for auto space after comment char according to language.
 
 ### Fixed
 - Make plugin determine file type for each call to catch new file type if changed
