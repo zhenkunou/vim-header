@@ -1,9 +1,9 @@
 #vim-header
-Easily Adds Brief Author Info and License Headers
+Easily adds brief author info and license headers
 
 Install
 =======
-Preferred installation method is using [Pathogen](https://github.com/tpope/vim-pathogen)
+Preferred installation method is [Pathogen](https://github.com/tpope/vim-pathogen)
 ```sh
 cd ~/.vim/bundle
 git clone https://github.com/alpertuna/vim-header
@@ -83,8 +83,10 @@ Supported filetypes are;
 - c
 - cpp
 - css
+- haskel
 - java
 - javascript
+- jsx
 - php
 - perl
 - python
@@ -98,3 +100,6 @@ And licenses are;
 - GNU
 
 If you want more filetypes or licenses, you can open issues or provide any improvements by pull requests on [alpertuna/vim-header](https://github.com/alpertuna/vim-header). Also you can correct my English on README file or at comments in source code.
+
+###Thanks to Contributors
+[Contributors List](https://github.com/alpertuna/vim-header/graphs/contributors)
