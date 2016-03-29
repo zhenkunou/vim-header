@@ -44,6 +44,12 @@ fun s:set_props()
         let b:comment_begin = '/*'
         let b:comment_end = ' */'
     " ----------------------------------
+    elseif b:filetype == 'haskell'
+        let b:block_comment = 1
+        let b:comment_char = ' -'
+        let b:comment_begin = '{-'
+        let b:comment_end = ' -}'
+    " ----------------------------------
     elseif b:filetype == 'perl'
         let b:first_line = '#!/usr/bin/env perl'
         let b:comment_char = '#'
