@@ -31,7 +31,7 @@ fun s:set_props()
     let b:block_comment = 0 " If file type has block comment support
     let b:min_comment_begin = '' " If file type has a special char for minified versions
     let b:comment_char = '' " Comment char, or for block comment trailing char of body
-    let b:space_after_char = 1 " Put auto space after comment char, if line is not empty
+    let b:auto_space_after_char = 1 " Put auto space after comment char, if line is not empty
 
     " Setting Values for Languages
     if
@@ -88,7 +88,7 @@ fun s:set_props()
     " For license texts, if there is a empty line, avoid trailing white space
     let b:comment_char_wo_space = b:comment_char
     " If there is space after comment char, put it
-    if b:space_after_char
+    if b:auto_space_after_char
         let b:comment_char .= ' '
     endif
 endfun
