@@ -83,6 +83,7 @@ Supported filetypes are;
 - c
 - cpp
 - css
+- groovy
 - haskel
 - java
 - javascript
@@ -91,6 +92,7 @@ Supported filetypes are;
 - php
 - perl
 - python
+- sass
 - sh
 - vim
 
