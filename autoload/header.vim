@@ -38,10 +38,12 @@ fun s:set_props()
         \ b:filetype == 'c' ||
         \ b:filetype == 'cpp' ||
         \ b:filetype == 'css' ||
+        \ b:filetype == 'groovy' ||
         \ b:filetype == 'java' ||
         \ b:filetype == 'javascript' ||
         \ b:filetype == 'javascript.jsx' ||
-        \ b:filetype == 'php'
+        \ b:filetype == 'php' ||
+        \ b:filetype == 'sass'
 
         let b:block_comment = 1
         let b:comment_char = ' *'
