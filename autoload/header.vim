@@ -28,6 +28,7 @@ fun s:set_props()
 
     " Default Values for Many Languages
     let b:first_line = '' " If file type has initial line
+    let b:encoding = ''   " encoding
     let b:block_comment = 0 " If file type has block comment support
     let b:min_comment_begin = '' " If file type has a special char for minified versions
     let b:comment_char = '' " Comment char, or for block comment trailing char of body
@@ -68,6 +69,7 @@ fun s:set_props()
     " ----------------------------------
     elseif b:filetype == 'python'
         let b:first_line = '#!/usr/bin/env python'
+        let b:encoding = '# -*- coding: utf-8 -*-'
         let b:comment_char = '#'
     " ----------------------------------
     elseif b:filetype == 'sh'
@@ -112,6 +114,11 @@ fun s:add_header()
         call append(l:i, b:first_line)
         let l:i += 1
     endif
+    " if has encoding
+    if b:encoding != ''
+        call append(l:i, b:encoding)
+        let l:i += 1
+    endif
     " If filetype supports block comment, open comment
     if b:block_comment
         call append(l:i, b:comment_begin)
@@ -120,7 +127,7 @@ fun s:add_header()
 
     " Fill user's information
     if g:header_field_filename
-        call append(l:i, b:comment_char.expand('%s:t'))
+        call append(l:i, b:comment_char.'@File   : '.expand('%s:t'))
         let l:i += 1
     endif
     if g:header_field_author != ''
@@ -129,11 +136,11 @@ fun s:add_header()
         else
             let l:email = ''
         endif
-        call append(l:i, b:comment_char.'Author: '.g:header_field_author.l:email)
+        call append(l:i, b:comment_char.'@Author : '.g:header_field_author.l:email)
         let l:i += 1
     endif
     if g:header_field_timestamp
-        call append(l:i, b:comment_char.'Date: '.strftime(g:header_field_timestamp_format))
+        call append(l:i, b:comment_char.'@Date   : '.strftime(g:header_field_timestamp_format))
         let l:i += 1
     endif
 
@@ -150,6 +157,11 @@ fun s:add_min_header()
     " If filetype has initial line
     if b:first_line != ''
         call append(l:i, b:first_line)
+        let l:i += 1
+    endif
+
+    if b:encoding != ''
+        call append(l:i, b:encoding)
         let l:i += 1
     endif
 
@@ -174,10 +186,10 @@ fun s:add_min_header()
         else
             let l:email = ''
         endif
-        let l:header_line .= ' Author: "'.g:header_field_author.l:email.'"'
+        let l:header_line .= ' @Author : "'.g:header_field_author.l:email.'"'
     endif
     if g:header_field_timestamp
-        let l:header_line .= ' Date: '.strftime(g:header_field_timestamp_format)
+        let l:header_line .= ' @Date   : '.strftime(g:header_field_timestamp_format)
     endif
 
     " If filetype supports block comment, close comment
@@ -225,6 +237,11 @@ fun s:add_license_header(license_name)
     " If filetype has initial line
     if b:first_line != ''
         call append(0, b:first_line)
+        let l:i += 1
+    endif
+
+    if b:encoding != ''
+        call append(l:i, b:encoding)
         let l:i += 1
     endif
 
