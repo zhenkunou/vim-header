@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - This CHANGELOG file
 - Filetype support for haskel and jsx
 - Control for auto space after comment char according to language.
+- Specific field placeholders according to file type
 
 ### Fixed
 - Make plugin determine file type for each call to catch new file type if changed

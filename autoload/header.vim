@@ -33,6 +33,10 @@ fun s:set_props()
     let b:min_comment_begin = '' " If file type has a special char for minified versions
     let b:comment_char = '' " Comment char, or for block comment trailing char of body
     let b:auto_space_after_char = 1 " Put auto space after comment char, if line is not empty
+    " Field placeholders according to doc comment syntax, if available
+    let b:field_file = 'File:'
+    let b:field_author = 'Author:'
+    let b:field_date = 'Date:'
 
     " Setting Values for Languages
     if
@@ -86,13 +90,18 @@ fun s:set_props()
     " Individual settings for special cases
     if b:filetype == 'php'
         let b:first_line = '<?php'
+        let b:field_author = '@author'
+    endif
+    if b:filetype == 'css'
+        let b:min_comment_begin = '/*!'
     endif
     if
-        \ b:filetype == 'css' ||
         \ b:filetype == 'javascript' ||
         \ b:filetype == 'javascript.jsx'
 
         let b:min_comment_begin = '/*!'
+        let b:field_file = '@file'
+        let b:field_author = '@author'
     endif
 
     " For license texts, if there is a empty line, avoid trailing white space
@@ -127,20 +136,20 @@ fun s:add_header()
 
     " Fill user's information
     if g:header_field_filename
-        call append(l:i, b:comment_char.'@File   : '.expand('%s:t'))
+        call append(l:i, b:comment_char . b:field_file . ' ' . expand('%s:t'))
         let l:i += 1
     endif
     if g:header_field_author != ''
         if g:header_field_author_email != ''
-            let l:email = ' <'.g:header_field_author_email.'>'
+            let l:email = ' <' . g:header_field_author_email . '>'
         else
             let l:email = ''
         endif
-        call append(l:i, b:comment_char.'@Author : '.g:header_field_author.l:email)
+        call append(l:i, b:comment_char . b:field_author . ' ' . g:header_field_author . l:email)
         let l:i += 1
     endif
     if g:header_field_timestamp
-        call append(l:i, b:comment_char.'@Date   : '.strftime(g:header_field_timestamp_format))
+        call append(l:i, b:comment_char . b:field_date . ' ' . strftime(g:header_field_timestamp_format))
         let l:i += 1
     endif
 
@@ -178,23 +187,23 @@ fun s:add_min_header()
 
     " Fill user's information
     if g:header_field_filename
-        let l:header_line .= ' '.expand('%s:t')
+        let l:header_line .= ' ' . expand('%s:t')
     endif
     if g:header_field_author != ''
         if g:header_field_author_email != ''
-            let l:email = ' <'.g:header_field_author_email.'>'
+            let l:email = ' <' . g:header_field_author_email . '>'
         else
             let l:email = ''
         endif
-        let l:header_line .= ' @Author : "'.g:header_field_author.l:email.'"'
+        let l:header_line .= ' ' . b:field_author . ' "' . g:header_field_author . l:email . '"'
     endif
     if g:header_field_timestamp
-        let l:header_line .= ' @Date   : '.strftime(g:header_field_timestamp_format)
+        let l:header_line .= ' ' . b:field_date . ' ' . strftime(g:header_field_timestamp_format)
     endif
 
     " If filetype supports block comment, close comment
     if b:block_comment
-        let l:header_line .= ' '.b:comment_end
+        let l:header_line .= ' ' . b:comment_end
     endif
 
     " Add line to file
@@ -204,16 +213,16 @@ endfun
 " Generate License Header
 fun s:add_license_header(license_name)
     " Path to license file
-    let l:file_name = s:license_files_dir.a:license_name
+    let l:file_name = s:license_files_dir . a:license_name
     " If license file is not exists, inform user
     if !filereadable(l:file_name)
-        echo 'There is no defined "'.a:license_name.'" license.'
+        echo 'There is no defined "' . a:license_name . '" license.'
         return
     endif
 
     " Add raw license, and count lines of it
     let l:license_line_count = -line('$')
-    execute '0read '.expand(l:file_name)
+    execute '0read ' . expand(l:file_name)
     let l:license_line_count += line('$')
 
     " Take raw license into comment
@@ -222,9 +231,9 @@ fun s:add_license_header(license_name)
         let l:line = getline(l:i)
         " If there is a emty line, avoid putting trailing space
         if l:line == ''
-            let l:line = b:comment_char_wo_space.l:line
+            let l:line = b:comment_char_wo_space . l:line
         else
-            let l:line = b:comment_char.l:line
+            let l:line = b:comment_char . l:line
         endif
 
         call setline(l:i,l:line)
@@ -253,16 +262,16 @@ fun s:add_license_header(license_name)
 
     " Fill user's information
     if g:header_field_filename
-        call append(l:i, b:comment_char.expand('%s:t'))
+        call append(l:i, b:comment_char . expand('%s:t'))
         let l:i += 1
     endif
     if g:header_field_author != ''
         if g:header_field_author_email != ''
-            let l:email = ' <'.g:header_field_author_email.'>'
+            let l:email = ' <' . g:header_field_author_email . '>'
         else
             let l:email = ''
         endif
-        call append(l:i, b:comment_char.'Copyright (c) '.strftime('%Y').' '.g:header_field_author.l:email)
+        call append(l:i, b:comment_char . 'Copyright (c) ' . strftime('%Y') . ' ' . g:header_field_author . l:email)
         call append(l:i+1, b:comment_char)
         let l:i += 2
     endif
@@ -297,14 +306,14 @@ fun header#add_header(type, license)
         elseif a:type == 2
             call s:add_license_header(a:license)
         else
-            echo 'There is no "'.a:type.'" type to add header.'
+            echo 'There is no "' . a:type . '" type to add header.'
         endif
     else
         if b:filetype == ''
             let l:filetype = 'this'
         else
-            let l:filetype = '"'.b:filetype.'"'
+            let l:filetype = '"' . b:filetype . '"'
         endif
-        echo 'No defined comment syntax for '.l:filetype.' filetype.'
+        echo 'No defined comment syntax for ' . l:filetype . ' filetype.'
     endif
 endfun
