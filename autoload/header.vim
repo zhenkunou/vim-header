@@ -52,7 +52,7 @@ fun s:set_props()
 
         let b:block_comment = 1
         let b:comment_char = ' *'
-        let b:comment_begin = '/*'
+        let b:comment_begin = '/**'
         let b:comment_end = ' */'
     " ----------------------------------
     elseif b:filetype == 'haskell'
@@ -90,7 +90,6 @@ fun s:set_props()
     " Individual settings for special cases
     if b:filetype == 'php'
         let b:first_line = '<?php'
-        let b:field_author = '@author'
     endif
     if b:filetype == 'css'
         let b:min_comment_begin = '/*!'
@@ -99,9 +98,10 @@ fun s:set_props()
         \ b:filetype == 'javascript' ||
         \ b:filetype == 'javascript.jsx'
 
-        let b:min_comment_begin = '/*!'
         let b:field_file = '@file'
         let b:field_author = '@author'
+        let b:field_date = '@date'
+        let b:min_comment_begin = '/*!'
     endif
 
     " For license texts, if there is a empty line, avoid trailing white space
